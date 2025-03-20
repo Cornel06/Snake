@@ -26,4 +26,3 @@ random apple placement -places occupied by the snake
 score
 Start/Pause/Restart
 Leaderboards
-!!!
