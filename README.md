@@ -11,18 +11,3 @@ status - checks repository status (view untracked files)
 log - commit history
 diff HEAD - compare the current state withe the last commit
 diff commit1 commit2 - compare 2 commits, commit1 and commit2 are the commit's names
-
-HOW IT WORKS: 
-collisions: walls and itself
-every apple eaten equals +1length in the back
-every 5-10 apples => speed up
-if length == grid size => WIN
-move w a s d
-some kind of tickrate and movement fundamentals
-if w pressed move up
-somehow keep moving up
-turn off opposite movement(cant go w s or a d)
-random apple placement -places occupied by the snake
-score
-Start/Pause/Restart
-Leaderboards
