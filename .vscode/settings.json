@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "raylib.h": "c",
+        "loop.h": "c",
+        "stdio.h": "c"
+    }
+}
