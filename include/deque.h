@@ -3,16 +3,15 @@
 
 typedef unsigned Element_t;
 
+typedef struct Node_t Node_t;
 typedef struct Deque_t Deque_t;
 
-
-void MakeDeque();
-void InsertFront();
-void InsertRear();
-Element_t DeleteFront();
-Element_t DeleteRear();
-Element_t Empty();
-Element_t Full();
+Deque_t MakeDeque();
+void PushFront();
+void PushtRear();
+Element_t PopFront();
+Element_t PopRear();
+Element_t IsEmpty();
 
 
 
