@@ -2,8 +2,6 @@
 #include <raylib.h>
 #include "../include/loop.h"
 
-//gcc main.c -o main -lraylib -lm -ldl -lpthread -lGL -lrt -lX11
-
 #define CellSize 30
 #define CellCount 25
 #define FPS 60
@@ -30,7 +28,7 @@ int main() {
         BeginDrawing();
         
         ClearBackground(ArenaColor);
-        FoodDraw(&apple, CellSize, SnakeColor);
+        FoodDraw(&apple, CellSize);
         
         EndDrawing();
     }

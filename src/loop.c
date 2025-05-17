@@ -5,7 +5,7 @@ void FoodInit(Food* food, Vector2 position, Image image) {
     food->position = position;
     food->texture = LoadTextureFromImage(image);
 }
-void FoodDraw(Food* food, Saiz_t CellSize, Color color){
+void FoodDraw(Food* food, Saiz_t CellSize){
     DrawTexture(food->texture, food->position.x * CellSize, food->position.y * CellSize, WHITE);
 }
 Vector2 RandomPosition(Saiz_t CellCount) {

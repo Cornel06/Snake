@@ -4,7 +4,7 @@
 
 typedef struct Node_t
 {
-    void* arr;
+    Element_t data;
     Node_t* next;
     Node_t* prev;
 }Node_t;
@@ -16,26 +16,61 @@ typedef struct Deque_t
 }Deque_t;
 
 Deque_t* MakeDeque() {
-    Deque_t* deque=malloc(sizeof(Deque_t));
+    Deque_t* deque = malloc(sizeof(Deque_t));
     if(!deque) {
         perror("Problem allocating memory for the deque\n");
         exit(-1);
     }
-    deque->first=NULL;
-    deque->last=NULL;
+    deque->first = NULL;
+    deque->last = NULL;
     return deque;
 }
 
-Element_t IsEmpty(Deque_t* deque){
-    if(deque->first==NULL || deque->last==NULL)
-        return 0;
-    else return 1;
+Node_t* MakeNode(Element_t elem){
+    Node_t* newnode = malloc(sizeof(Node_t));
+    if(!newnode) {
+        perror("Problem allocating memory for the node");
+        exit(-1);
+    }
+    newnode->data = elem;
+    newnode->next = NULL;
+    newnode->prev = NULL;
+    return newnode;
 }
 
-void PushFront();
+Element_t IsEmpty(Deque_t* deque){
+    if(deque->first == NULL || deque->last == NULL)
+        return 1;
+    else return 0;
+}
 
-void PushtRear();
+void PushFront(Deque_t* deque, Node_t* newnode){
+    newnode->next = deque->first;
+    if(IsEmpty(deque)){
+        deque->last=newnode;
+    }
+    else{
+        deque->first->prev = newnode;
+    }
+    deque->first = newnode;
+}
 
-Element_t PopFront();
+void PushRear(Deque_t* deque, Node_t* newnode){
+    newnode->prev = deque->last;
+    if(IsEmpty(deque)){
+        deque->first=newnode;
+    }
+    else{
+        deque->last->next = newnode;
+    }
+    deque->last = newnode;
+}
+
+Element_t PopFront(Deque_t* deque){
+    if(IsEmpty(deque)){
+        return NULL;
+    }
+
+}
 
 Element_t PopRear();
