@@ -38,7 +38,7 @@ Node_t* MakeNode(Element_t elem){
     return newnode;
 }
 
-Element_t IsEmpty(Deque_t* deque){
+int IsEmpty(Deque_t* deque){
     if(deque->first == NULL || deque->last == NULL)
         return 1;
     else return 0;
@@ -68,9 +68,38 @@ void PushRear(Deque_t* deque, Node_t* newnode){
 
 Element_t PopFront(Deque_t* deque){
     if(IsEmpty(deque)){
-        return NULL;
+        return -1;
     }
-
+    Element_t poppedItem;
+    Node_t* tmp = deque->first;
+    poppedItem = tmp->data;
+    if(deque->first == deque->last){
+        deque->first=NULL;
+        deque->last=NULL;
+    }
+    else{
+        deque->first = tmp->next;
+        deque->first->prev = NULL;
+    }
+    free(tmp);
+    return poppedItem;
 }
 
-Element_t PopRear();
+Element_t PopRear(Deque_t* deque){
+    if(IsEmpty(deque)){
+        return -1;
+    }
+    Element_t poppedItem;
+    Node_t* tmp = deque->last;
+    poppedItem = tmp->data;
+    if(deque->first == deque->last){
+        deque->first=NULL;
+        deque->last=NULL;
+    }
+    else{
+        deque->last = tmp->prev;
+        deque->last->next = NULL;
+    }
+    free(tmp);
+    return poppedItem;
+}

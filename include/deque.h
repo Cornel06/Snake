@@ -16,8 +16,4 @@ void PushRear(Deque_t*, Node_t*);
 Element_t PopFront();
 Element_t PopRear();
 
-
-
-
-
 #endif

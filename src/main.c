@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <raylib.h>
 #include "../include/loop.h"
+#include <raymath.h>
 
 #define CellSize 30
 #define CellCount 25
