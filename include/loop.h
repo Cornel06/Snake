@@ -16,9 +16,12 @@ void FoodDraw(Food* food, Saiz_t Cellsize);
 Vector2 RandomPosition(Saiz_t CellCount);
 
 //SNAKE:
-typedef struct Snake
-{
-
+typedef struct Snake{
+    Deque_t* position;
+    Color color;
 }Snake;
+
+void SnakeInit(Snake* snake, Color color);
+void SnakeDraw(Snake* snake, Saiz_t CellSize);
 
 #endif

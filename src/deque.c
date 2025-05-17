@@ -2,18 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct Node_t
-{
-    Element_t data;
-    Node_t* next;
-    Node_t* prev;
-}Node_t;
-
-typedef struct Deque_t
-{
-    Node_t* first;
-    Node_t* last;
-}Deque_t;
+#define EMPTY_VECTOR (Vector2){-1.0f, -1.0f}
 
 Deque_t* MakeDeque() {
     Deque_t* deque = malloc(sizeof(Deque_t));
@@ -23,6 +12,7 @@ Deque_t* MakeDeque() {
     }
     deque->first = NULL;
     deque->last = NULL;
+    deque->size = 0;
     return deque;
 }
 
@@ -39,7 +29,7 @@ Node_t* MakeNode(Element_t elem){
 }
 
 int IsEmpty(Deque_t* deque){
-    if(deque->first == NULL || deque->last == NULL)
+    if(deque->size == 0)
         return 1;
     else return 0;
 }
@@ -53,6 +43,7 @@ void PushFront(Deque_t* deque, Node_t* newnode){
         deque->first->prev = newnode;
     }
     deque->first = newnode;
+    deque->size++;
 }
 
 void PushRear(Deque_t* deque, Node_t* newnode){
@@ -64,11 +55,12 @@ void PushRear(Deque_t* deque, Node_t* newnode){
         deque->last->next = newnode;
     }
     deque->last = newnode;
+    deque->size++;
 }
 
 Element_t PopFront(Deque_t* deque){
     if(IsEmpty(deque)){
-        return -1;
+        return EMPTY_VECTOR;
     }
     Element_t poppedItem;
     Node_t* tmp = deque->first;
@@ -82,12 +74,13 @@ Element_t PopFront(Deque_t* deque){
         deque->first->prev = NULL;
     }
     free(tmp);
+    deque->size--;
     return poppedItem;
 }
 
 Element_t PopRear(Deque_t* deque){
     if(IsEmpty(deque)){
-        return -1;
+        return EMPTY_VECTOR;
     }
     Element_t poppedItem;
     Node_t* tmp = deque->last;
@@ -101,5 +94,6 @@ Element_t PopRear(Deque_t* deque){
         deque->last->next = NULL;
     }
     free(tmp);
+    deque->size--;
     return poppedItem;
 }
