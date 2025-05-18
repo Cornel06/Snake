@@ -19,6 +19,7 @@ int main() {
     
     Food apple;
     Snake snake;
+    
     Vector2 pos = RandomPosition(CellCount);  //!!!!!!!! NEED TO CHANGE ONCE I AM DONE WITH TRIGGERING, IT SPAWNS ONLY ONCE!!!!
 
     Image image = LoadImage(IMAGE);
@@ -27,15 +28,21 @@ int main() {
     FoodInit(&apple, pos, image);
     UnloadImage(image);
     
+    Vector2 direction = {1, 0};
+
     SnakeInit(&snake, SnakeColor);
+
+    double LastUpdateTime = GetTime();
 
     while(WindowShouldClose() == false) {
         BeginDrawing();
-        
         ClearBackground(ArenaColor);
+       
         FoodDraw(&apple, CellSize);
         SnakeDraw(&snake, CellSize);
-        
+        if(EventTrigger(&LastUpdateTime, 0.12)==1){
+            UpdatePosition(snake.position, direction);
+        }
         EndDrawing();
     }
     

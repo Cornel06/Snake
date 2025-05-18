@@ -23,5 +23,8 @@ typedef struct Snake{
 
 void SnakeInit(Snake* snake, Color color);
 void SnakeDraw(Snake* snake, Saiz_t CellSize);
+void UpdatePosition(Deque_t* body, Vector2 direction);
+int EventTrigger(double* LastUpdateTime, double interval);
+
 
 #endif

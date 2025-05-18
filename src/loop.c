@@ -1,6 +1,7 @@
 #include "../include/loop.h"
 #include "../include/deque.h"
 #include <stdio.h>
+#include <raymath.h>
 //FOOD:
 void FoodInit(Food* food, Vector2 position, Image image) {
     food->position = position;
@@ -30,7 +31,26 @@ void SnakeInit(Snake* snake, Color color){
 void SnakeDraw(Snake* snake, Saiz_t CellSize){
     Node_t* curr = snake->position->first;
     while(curr != NULL){
-        DrawRectangle(curr->data.x*CellSize, curr->data.y*CellSize, CellSize, CellSize, snake->color);
+        Rectangle body;
+        body.x = curr->data.x*(float)CellSize;
+        body.y = curr->data.y*(float)CellSize;
+        body.width = (float)CellSize;
+        body.height = (float)CellSize;
+        DrawRectangleRounded(body, 0.5, 6, snake->color);
         curr = curr->next;
     }
+}
+void UpdatePosition(Deque_t* body, Vector2 direction){
+    PopRear(body);
+    Vector2 head = body->first->data;
+    Vector2 newHead = Vector2Add(head, direction);
+    PushFront(body, MakeNode(newHead)); 
+}
+int EventTrigger(double* LastUpdateTime, double interval){
+    double CurrTime = GetTime();
+    if(CurrTime - *LastUpdateTime >= interval){
+        *LastUpdateTime = CurrTime;
+        return 1;
+    }
+    return 0;
 }
