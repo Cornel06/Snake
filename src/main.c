@@ -20,17 +20,16 @@ int main() {
     Food apple;
     Snake snake;
     
-    Vector2 pos = RandomPosition(CellCount);  //!!!!!!!! NEED TO CHANGE ONCE I AM DONE WITH TRIGGERING, IT SPAWNS ONLY ONCE!!!!
+    //Vector2 pos = RandomPosition(CellCount);  //!!!!!!!! NEED TO CHANGE ONCE I AM DONE WITH TRIGGERING, IT SPAWNS ONLY ONCE!!!!
 
     Image image = LoadImage(IMAGE);
-    ImageResize(&image, 30, 30);    
-
-    FoodInit(&apple, pos, image);
-    UnloadImage(image);
+    ImageResize(&image, 30, 30);
     
     Vector2 direction = {1, 0};
+    SnakeInit(&snake, SnakeColor, direction);
 
-    SnakeInit(&snake, SnakeColor);
+    FoodInit(&apple, RandomPosition(CellCount, snake.position), image);  //!!!!
+    UnloadImage(image);
 
     double LastUpdateTime = GetTime();
 
@@ -40,8 +39,27 @@ int main() {
        
         FoodDraw(&apple, CellSize);
         SnakeDraw(&snake, CellSize);
+        
+        
         if(EventTrigger(&LastUpdateTime, 0.12)==1){
-            UpdatePosition(snake.position, direction);
+            UpdatePosition(&snake, snake.direction);
+            FoodCollision(&snake, &apple, CellCount);
+        }
+        if(IsKeyPressed(KEY_W) && snake.direction.y != 1){
+            Vector2 vector = {0, -1};
+            snake.direction = vector;
+        }
+         if(IsKeyPressed(KEY_S) && snake.direction.y != -1){
+            Vector2 vector = {0, 1};
+            snake.direction = vector;
+        }
+         if(IsKeyPressed(KEY_A) && snake.direction.x != 1){
+            Vector2 vector = {-1, 0};
+            snake.direction = vector;
+        }
+         if(IsKeyPressed(KEY_D) && snake.direction.x != -1){
+            Vector2 vector = {1, 0};
+            snake.direction = vector;
         }
         EndDrawing();
     }

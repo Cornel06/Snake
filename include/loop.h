@@ -13,18 +13,27 @@ typedef struct Food {
 
 void FoodInit(Food* food, Vector2 position, Image image);
 void FoodDraw(Food* food, Saiz_t Cellsize);
-Vector2 RandomPosition(Saiz_t CellCount);
+Vector2 GenerateRandomCoord(Saiz_t CellCount);
+Vector2 RandomPosition(Saiz_t CellCount, Deque_t* body);
 
 //SNAKE:
 typedef struct Snake{
     Deque_t* position;
     Color color;
+    Vector2 direction;
+    bool ate;
 }Snake;
 
-void SnakeInit(Snake* snake, Color color);
+void SnakeInit(Snake* snake, Color color, Vector2 direction);
 void SnakeDraw(Snake* snake, Saiz_t CellSize);
-void UpdatePosition(Deque_t* body, Vector2 direction);
+
+//MOVEMENT:
+void UpdatePosition(Snake* snake, Vector2 direction);
 int EventTrigger(double* LastUpdateTime, double interval);
+
+//COLLISION:
+void FoodCollision(Snake* snake, Food* food, Saiz_t CellCount);
+int ElementInSnake(Vector2 Coords, Deque_t* body);
 
 
 #endif
