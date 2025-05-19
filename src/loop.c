@@ -1,14 +1,24 @@
 #include "../include/loop.h"
 #include "../include/deque.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <raymath.h>
+
+//BORDER:
+void BorderInit(Rectangle* param, Saiz_t Offset, Saiz_t CellCount, Saiz_t CellSize){
+    param->x = (float)Offset - 5;
+    param->y = (float)Offset - 5;
+    param->width = (float)CellSize * CellCount + 10;
+    param->height = (float)CellSize * CellCount +10;
+}
+
 //FOOD:
 void FoodInit(Food* food, Vector2 position, Image image) {
     food->position = position;
     food->texture = LoadTextureFromImage(image);
 }
-void FoodDraw(Food* food, Saiz_t CellSize){
-    DrawTexture(food->texture, food->position.x * CellSize, food->position.y * CellSize, WHITE);
+void FoodDraw(Food* food, Saiz_t CellSize, Saiz_t Offset){
+    DrawTexture(food->texture, food->position.x * CellSize + Offset, food->position.y * CellSize + Offset, WHITE);
 }
 Vector2 GenerateRandomCoord(Saiz_t CellCount){
     int x = GetRandomValue(0, CellCount - 1);
@@ -23,6 +33,7 @@ Vector2 RandomPosition(Saiz_t CellCount, Deque_t* body) {
     }
     return Coords;
 }
+
 //SNAKE:
 void SnakeInit(Snake* snake, Color color, Vector2 direction){
     snake->position = MakeDeque();
@@ -36,12 +47,12 @@ void SnakeInit(Snake* snake, Color color, Vector2 direction){
     snake->direction = direction;
     snake->ate = false;
 }
-void SnakeDraw(Snake* snake, Saiz_t CellSize){
+void SnakeDraw(Snake* snake, Saiz_t CellSize, Saiz_t Offset){
     Node_t* curr = snake->position->first;
     while(curr != NULL){
         Rectangle body;
-        body.x = curr->data.x*(float)CellSize;
-        body.y = curr->data.y*(float)CellSize;
+        body.x = curr->data.x*(float)CellSize + Offset;
+        body.y = curr->data.y*(float)CellSize + Offset;
         body.width = (float)CellSize;
         body.height = (float)CellSize;
         DrawRectangleRounded(body, 0.5, 6, snake->color);
@@ -69,10 +80,11 @@ int EventTrigger(double* LastUpdateTime, double interval){
 }
 
 //COLLISION:
-void FoodCollision(Snake* snake, Food* food, Saiz_t CellCount){
+void FoodCollision(Snake* snake, Food* food, Saiz_t CellCount, Saiz_t* score){
     if(Vector2Equals(snake->position->first->data, food->position)){
         food->position = RandomPosition(CellCount, snake->position);
         snake->ate = true;
+        *score+=100;
     }
 }
 int ElementInSnake(Vector2 Coords, Deque_t* body){
@@ -85,3 +97,36 @@ int ElementInSnake(Vector2 Coords, Deque_t* body){
     }
     return 0;
 } 
+void EdgeCollision(Snake* snake, Color color, Vector2 direction, Food* food, Saiz_t CellSize, Saiz_t CellCount, bool* pause, Saiz_t* score){
+    if(snake->position->first->data.x == CellCount || snake->position->first->data.x == -1){
+        GameOver(snake, color, direction, food, CellSize, CellCount, pause, score);
+    }
+    if(snake->position->first->data.y == CellCount || snake->position->first->data.y == -1){
+        GameOver(snake, color, direction, food, CellSize, CellCount, pause, score);
+    }
+}
+void TailCollision(Snake* snake, Color color, Vector2 direction, Food* food, Saiz_t CellSize, Saiz_t CellCount, bool* pause, Saiz_t* score){
+    Node_t* head = snake->position->first;
+    Node_t* curr = head->next;
+    while(curr != NULL){
+        if(Vector2Equals(head->data, curr->data)){
+            GameOver(snake, color, direction, food, CellSize, CellCount, pause, score);
+            break;
+        }
+        curr = curr->next;
+    }
+}
+
+//END OF GAME:
+void Reset(Snake* snake){
+    while(!IsEmpty(snake->position)){
+        PopFront(snake->position);
+    }
+}
+void GameOver(Snake* snake, Color color, Vector2 direction, Food* food, Saiz_t CellSize, Saiz_t CellCount, bool* pause, Saiz_t* score){
+    Reset(snake);
+    SnakeInit(snake, color, snake->direction);
+    food->position = RandomPosition(CellCount, snake->position);
+    *pause = true;
+    *score = 0;
+}
