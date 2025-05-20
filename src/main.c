@@ -10,10 +10,11 @@
 #define Offset 75
 #define FPS 60
 #define IMAGE "graphics/food.png"
+#define SPEED 0.14
 
-Color SnakeColor = {43, 51, 24, 255};
-Color ArenaColor = {172, 226, 63, 255};
-Color BorderColor = {0, 153, 153, 255};
+Color SnakeColor = {0, 102, 204, 255};
+Color ArenaColor = {174, 226, 69, 255};
+Color BorderColor = {255, 255, 255, 255};
 Color FontColor = {255, 255, 255, 255};
 
 int main() {
@@ -33,7 +34,6 @@ int main() {
     
     Vector2 direction = {1, 0};
     SnakeInit(&snake, SnakeColor, direction);
-
     FoodInit(&apple, RandomPosition(CellCount, snake.position), image);  //!!!!
     UnloadImage(image);
 
@@ -50,7 +50,7 @@ int main() {
         FoodDraw(&apple, CellSize, Offset);
         SnakeDraw(&snake, CellSize, Offset);        
         
-        if(!pause && EventTrigger(&LastUpdateTime, 0.12)==1){
+        if(!pause && EventTrigger(&LastUpdateTime, SPEED)==1){
             UpdatePosition(&snake, snake.direction);
             FoodCollision(&snake, &apple, CellCount, &score);
             EdgeCollision(&snake, SnakeColor, direction, &apple, CellSize, CellCount, &pause, &score);
@@ -85,7 +85,3 @@ int main() {
     CloseWindow();
     return 0;
 }
-
-
-
-//PROBLEMS: snake always on pause
