@@ -34,7 +34,7 @@ int main() {
     
     Vector2 direction = {1, 0};
     SnakeInit(&snake, SnakeColor, direction);
-    FoodInit(&apple, RandomPosition(CellCount, snake.position), image);  //!!!!
+    FoodInit(&apple, RandomPosition(CellCount, snake.position), image);     
     UnloadImage(image);
 
     double LastUpdateTime = GetTime();
